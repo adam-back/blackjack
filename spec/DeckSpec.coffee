@@ -15,3 +15,7 @@ describe 'deck', ->
       assert.strictEqual deck.length, 49
       hand.playable && (assert.strictEqual deck.last(), hand.hit())
       hand.playable && (assert.strictEqual deck.length, 48)
+      hand.playable && (assert.strictEqual deck.last(), hand.hit())
+      hand.playable && (assert.strictEqual deck.length, 47)
+
+

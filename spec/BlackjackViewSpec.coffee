@@ -1,4 +1,7 @@
 expect = chai.expect
+sinon = "sinon"
+sinonChai = "sinon-chai"
+@chai = use: (sinonChai)
 
 describe 'game', ->
   deck = null
@@ -38,8 +41,9 @@ describe 'game', ->
       expect(deck.length).to.equal 47
       expect(dealer.scores()[0]).to.not.equal dealerScorePreHit
 
-    xit "dealer should hit under 17", ->
-      expect(dealer.scores()[0])
+    it "dealer should hit under 17", ->
+
+      expect(spy).called.to.be.true
 
     xit "dealer should stay on 17", ->
 

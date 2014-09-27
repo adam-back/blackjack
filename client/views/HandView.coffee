@@ -8,23 +8,32 @@ class window.HandView extends Backbone.View
   initialize: ->
     @collection.on 'add remove change', =>
       @render()
-      @checkPlayerScore(@collection.scores()[0])
+      # @checkPlayerScore()
     @render()
 
   render: ->
     @$el.children().detach()
     @$el.html @template @collection
-    if @collection.scores()[0] <= 21
+    if @checkPlayerScore(@collection.scores()[0]) is 'bust'
       @$el.append @collection.map (card) ->
         new CardView(model: card).$el
-      @$('.score').text @collection.scores()[0]
+      @$('.score').text 'Bust!'
+    else if @checkPlayerScore(@collection.scores()[0]) is 'blackjack'
+      @$el.append @collection.map (card) ->
+        new CardView(model: card).$el
+      @$('.score').text 'Blackjack!'
     else
       @$el.append @collection.map (card) ->
         new CardView(model: card).$el
-      @$('.score').text "Bust!"
+      @$('.score').text @collection.scores()[0]
 
   checkPlayerScore: (score) ->
     if score > 21
-      alert "You Lost!"
+      # alert "You Lost!"
+      return 'bust'
     if score is 21
-      alert "You hit 21"
+      # alert "You hit 21"
+      return 'blackjack'
+    if score < 21
+      return 'play'
+

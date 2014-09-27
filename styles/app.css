@@ -8,7 +8,11 @@
 }
 
 .covered {
-  background-color: black;
+  content: url('../img/card-back.png');
+}
+
+.covered:hover {
+  content: "";
 }
 
 .hand {

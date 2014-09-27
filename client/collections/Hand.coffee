@@ -53,6 +53,10 @@ class window.Hand extends Backbone.Collection
         @gameDecision('dealerWon')
         return
 
+    if dealerScore > 17 < score
+      @gameDecision('playerWon')
+      return
+
     if dealerScore is score
       @gameDecision('push')
       return

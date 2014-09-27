@@ -2,16 +2,21 @@ class window.Hand extends Backbone.Collection
 
   model: Card
 
+  scoreStore: 0
+
   initialize: (array, @deck, @isDealer) ->
-    hitcount: 0
 
   hit: ->
     @add(@deck.pop()).last()
-    hitcount + 1
+    if(!@isDealer)
+      @playerScore()
 
-  stand: ->
+  stand: (score) ->
     @models[0].flip()
-    @dealerAI()
+    @dealerAI(score)
+
+  playerScore: ->
+    @scoreStore = @scores()[0]
 
   scores: ->
     # The scores are an array of potential scores.
@@ -25,17 +30,39 @@ class window.Hand extends Backbone.Collection
     , 0
     if hasAce then [score, score + 10] else [score]
 
-  dealerAI: ->
-    # loop
-    # console.log()
-    dealerHit = true
-    #get the dealer's value
-    while dealerHit
-      if @scores()[0] < 17
+  dealerAI: (score) ->
+    dealerScore = @scores()[0]
+
+    if dealerScore > 21
+      @gameDecision('playerWon')
+      return
+
+    if score < dealerScore
+      @gameDecision('dealerWon')
+      return
+
+    if dealerScore < 17
         @hit()
-      else if @scores()[0] is 17
-        # make game decision
-        dealerHit = false
+        @dealerAI(score)
+
+    if dealerScore is 17
+      if score > dealerScore
+        @gameDecision('playerWon')
+        return
       else
-        # make game decision
-        dealerHit = false
+        @gameDecision('dealerWon')
+        return
+
+    if dealerScore is score
+      @gameDecision('push')
+      return
+
+  gameDecision: (decision) ->
+    if decision is 'dealerWon' then alert 'You lose!'
+    if decision is 'playerWon' then alert 'You win!'
+    if decision is 'push' then alert 'Push! House wins'
+
+
+
+
+

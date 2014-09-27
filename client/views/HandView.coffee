@@ -8,7 +8,6 @@ class window.HandView extends Backbone.View
   initialize: ->
     @collection.on 'add remove change', =>
       @render()
-      # @checkPlayerScore()
     @render()
 
   render: ->
@@ -29,10 +28,8 @@ class window.HandView extends Backbone.View
 
   checkPlayerScore: (score) ->
     if score > 21
-      # alert "You Lost!"
       return 'bust'
     if score is 21
-      # alert "You hit 21"
       return 'blackjack'
     if score < 21
       return 'play'

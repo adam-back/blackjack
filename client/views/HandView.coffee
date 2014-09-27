@@ -13,11 +13,11 @@ class window.HandView extends Backbone.View
   render: ->
     @$el.children().detach()
     @$el.html @template @collection
-    if @checkPlayerScore(@collection.scores()[0]) is 'bust'
+    if @checkScore(@collection.scores()[0]) is 'bust'
       @$el.append @collection.map (card) ->
         new CardView(model: card).$el
       @$('.score').text 'Bust!'
-    else if @checkPlayerScore(@collection.scores()[0]) is 'blackjack'
+    else if @checkScore(@collection.scores()[0]) is 'blackjack'
       @$el.append @collection.map (card) ->
         new CardView(model: card).$el
       @$('.score').text 'Blackjack!'
@@ -26,7 +26,7 @@ class window.HandView extends Backbone.View
         new CardView(model: card).$el
       @$('.score').text @collection.scores()[0]
 
-  checkPlayerScore: (score) ->
+  checkScore: (score) ->
     if score > 21
       return 'bust'
     if score is 21

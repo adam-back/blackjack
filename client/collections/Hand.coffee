@@ -3,9 +3,11 @@ class window.Hand extends Backbone.Collection
   model: Card
 
   initialize: (array, @deck, @isDealer) ->
+    hitcount: 0
 
   hit: ->
     @add(@deck.pop()).last()
+    hitcount + 1
 
   stand: ->
     @models[0].flip()

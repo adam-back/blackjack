@@ -9,6 +9,7 @@ class window.Hand extends Backbone.Collection
 
   stand: ->
     @models[0].flip()
+    @dealerAI()
 
   scores: ->
     # The scores are an array of potential scores.
@@ -21,3 +22,18 @@ class window.Hand extends Backbone.Collection
       score + if card.get 'revealed' then card.get 'value' else 0
     , 0
     if hasAce then [score, score + 10] else [score]
+
+  dealerAI: ->
+    # loop
+    # console.log()
+    dealerHit = true
+    #get the dealer's value
+    while dealerHit
+      if @scores()[0] < 17
+        @hit()
+      else if @scores()[0] is 17
+        # make game decision
+        dealerHit = false
+      else
+        # make game decision
+        dealerHit = false

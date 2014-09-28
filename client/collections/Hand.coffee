@@ -32,36 +32,59 @@ class window.Hand extends Backbone.Collection
 
   dealerAI: (playerScore) ->
     dealerScore = @scores()[0]
+    playing = true
 
-    if dealerScore > 21
-      @gameDecision('playerWon')
-      return
+    while playing
+      if playerScore < dealerScore
+        if dealerScore <= 21
+          @gameDecision('dealerWon')
+          playing = false
+        else
+          @gameDecision('playerWon')
+          playing = false
 
-    if playerScore < dealerScore
-      @gameDecision('dealerWon')
-      return
-
-    if dealerScore < 17 && dealerScore < playerScore
-        @hit()
-        @dealerAI(playerScore)
-    else if dealerScore < 17 && dealerScore > playerScore
-        @gameDecision('dealerWon')
-
-    if dealerScore is 17
       if playerScore > dealerScore
-        @gameDecision('playerWon')
-        return
-      else
-        @gameDecision('dealerWon')
-        return
+        if dealerScore < 17
+          @hit()
+          playing = false
+          @dealerAI(playerScore)
+        else
+          @gameDecision('playerWon')
+          playing = false
 
-    if dealerScore > 17 < playerScore
-      @gameDecision('playerWon')
-      return
+      if playerScore is dealerScore
+        @gameDecision('push')
+        playing = false
 
-    if dealerScore is playerScore
-      @gameDecision('push')
-      return
+    # if dealerScore > 21
+    #   @gameDecision('playerWon')
+    #   return
+
+    # if playerScore < dealerScore
+    #   @gameDecision('dealerWon')
+    #   return
+
+    # if dealerScore < 17 && dealerScore < playerScore
+    #     @hit()
+    #     @dealerAI(playerScore)
+    # else if dealerScore < 17 && dealerScore > playerScore
+    #     @gameDecision('dealerWon')
+
+    # if dealerScore is 17
+    #   if playerScore > dealerScore
+    #     @gameDecision('playerWon')
+    #     return
+    #   else
+    #     @gameDecision('dealerWon')
+    #     return
+
+    # if dealerScore > 17 < playerScore
+    #   @gameDecision('playerWon')
+    #   return
+
+    # if dealerScore is playerScore
+    #   @gameDecision('push')
+    #   return
 
   gameDecision: (decision) ->
     if decision is 'dealerWon'

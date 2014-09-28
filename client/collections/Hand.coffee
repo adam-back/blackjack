@@ -8,8 +8,8 @@ class window.Hand extends Backbone.Collection
 
   hit: ->
     @add(@deck.pop()).last()
-    if(!@isDealer)
-      @playerScore()
+    if(@scores()[0] > 21)
+      @gameDecision('dealerWon')
 
   stand: (score) ->
     @models[0].flip()
@@ -41,15 +41,18 @@ class window.Hand extends Backbone.Collection
       @gameDecision('dealerWon')
       return
 
-    if dealerScore < 17
+    if dealerScore < 17 && dealerScore < score
         @hit()
         @dealerAI(score)
+    else if dealerScore < 17 && dealerScore > score
+        @gameDecision('dealerWon')
+        return
 
     if dealerScore is 17
       if score > dealerScore
         @gameDecision('playerWon')
         return
-      else
+      else if score < dealerScore
         @gameDecision('dealerWon')
         return
 
@@ -62,9 +65,27 @@ class window.Hand extends Backbone.Collection
       return
 
   gameDecision: (decision) ->
-    if decision is 'dealerWon' then alert 'You lose!'
-    if decision is 'playerWon' then alert 'You win!'
-    if decision is 'push' then alert 'Push! House wins'
+    if decision is 'dealerWon'
+      console.log('You lose!')
+      setTimeout (->
+        location.reload()
+        return
+      ), 2000
+    if decision is 'playerWon'
+      # alert 'You win!'
+      console.log('You Win!')
+      setTimeout (->
+        location.reload()
+        return
+      ), 2000
+    if decision is 'push'
+      # alert 'Push! House wins'
+      console.log('Push House Wins!')
+      setTimeout (->
+        location.reload()
+        return
+      ), 2000
+
 
 
 

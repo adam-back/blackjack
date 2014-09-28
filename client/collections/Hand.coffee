@@ -30,37 +30,36 @@ class window.Hand extends Backbone.Collection
     , 0
     if hasAce then [score, score + 10] else [score]
 
-  dealerAI: (score) ->
+  dealerAI: (playerScore) ->
     dealerScore = @scores()[0]
 
     if dealerScore > 21
       @gameDecision('playerWon')
       return
 
-    if score < dealerScore
+    if playerScore < dealerScore
       @gameDecision('dealerWon')
       return
 
-    if dealerScore < 17 && dealerScore < score
+    if dealerScore < 17 && dealerScore < playerScore
         @hit()
-        @dealerAI(score)
-    else if dealerScore < 17 && dealerScore > score
+        @dealerAI(playerScore)
+    else if dealerScore < 17 && dealerScore > playerScore
         @gameDecision('dealerWon')
-        return
 
     if dealerScore is 17
-      if score > dealerScore
+      if playerScore > dealerScore
         @gameDecision('playerWon')
         return
-      else if score < dealerScore
+      else
         @gameDecision('dealerWon')
         return
 
-    if dealerScore > 17 < score
+    if dealerScore > 17 < playerScore
       @gameDecision('playerWon')
       return
 
-    if dealerScore is score
+    if dealerScore is playerScore
       @gameDecision('push')
       return
 
